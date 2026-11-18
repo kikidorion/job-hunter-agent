@@ -1,0 +1,11 @@
+# your personal data never leaves your machine
+profile.yaml
+config.yaml
+.env
+data/
+queue/
+logs/
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

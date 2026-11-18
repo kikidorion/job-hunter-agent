@@ -1,0 +1,102 @@
+# Job Hunter config: WHAT YOU VALUE and WHERE TO LOOK.
+# Copy to config.yaml and edit. Jev's answers are cached per job, so changing weights, values, tiers,
+# or penalties and running `python -m jobhunt rescore` re-ranks everything without new API calls.
+# Changing `industries` or `role_families` changes the questions themselves: run `rejudge` after.
+# Full guide: docs/CUSTOMIZE.md
+
+models:
+  judge: jev-latest                        # TypeSafe System One: scoring + fact-checking
+  writer: anthropic/claude-sonnet-5.5      # any OpenRouter model id: resume + cover letter prose
+
+home_country: the United States            # used for remote eligibility and the non-local penalty
+
+hard_filters:
+  salary_floor: 100000        # reject postings whose posted max pay is below this (unposted pay is kept)
+  salary_target: 130000       # pay below this costs points instead of rejecting
+  max_posting_age_days: 21    # aggregators keep dead listings; company boards only list open roles
+  min_role_fit: 0.15          # 0..1: drop only clearly unrelated professions
+
+# ---- WHAT YOU VALUE ----------------------------------------------------------------------
+# Each feature is a 0..1 score per posting; the composite is the weighted mean.
+# Weights are relative (they do not need to sum to 1). Set a weight to 0 to ignore that feature.
+weights:
+  role_fit: 0.25        # do you have the skills the posting requires
+  industry: 0.15        # does the work serve an industry you care about (values below)
+  arrangement: 0.15     # remote / hybrid / onsite (values below)
+  comp: 0.10            # posted pay vs salary_target
+  layoff_safety: 0.08   # employer durability signals
+  autonomy: 0.07        # do you choose the problems and methods
+  benefits: 0.06
+  workload: 0.06        # sustainable hours vs crunch
+  equity: 0.05          # public-good / underserved-community impact of the work
+  side_ventures: 0.03   # freedom to keep side businesses, trading, or projects
+
+arrangement_value:
+  remote_anywhere: 1.0
+  remote_restricted: 0.75
+  hybrid_light: 0.5
+  onsite_heavy: 0.2
+  unclear: 0.5
+
+# Industries Jev chooses from. `describe` is what Jev reads; `value` (0..1) is how much you care.
+# Keep the list short and distinct (5-10 entries). "other" is added automatically.
+industries:
+  climate_energy: {describe: "Energy, electricity grid, renewables, climate, carbon", value: 1.0}
+  health: {describe: "Healthcare, public health, or health tech", value: 0.7}
+  education: {describe: "Education or edtech", value: 0.7}
+  public_sector: {describe: "Government, public agencies, nonprofits", value: 0.6}
+  finance: {describe: "Banks, trading firms, fintech, insurance", value: 0.4}
+  tech_other: {describe: "Other technology or consumer internet", value: 0.3}
+other_industry_value: 0.1
+
+# Employers in these industries usually restrict outside work even when the posting is silent (0..1 prior).
+side_work:
+  restricted_industries: {finance: 0.2}
+
+# Role families pick which resume emphasis the writer uses. Name them for the kinds of jobs you apply to.
+# They also drive `show_for` / `highlight_for` in profile.yaml. "other" is added automatically.
+role_families:
+  data_analyst: {describe: "Data, business, or product analyst; BI; reporting; analytics manager"}
+  data_scientist: {describe: "Data scientist, ML or applied scientist, predictive modeling"}
+  analytics_engineer: {describe: "Analytics engineer, data engineer, AI/LLM engineer, automation"}
+
+dealbreakers:             # true = score 0 (hidden). Many people do better with penalties than hard rejects.
+  onsite_3plus_days: false
+  mainly_swe: false       # production software / ML platform roles (for analysts who don't want them)
+  mainly_swe_threshold: 0.5
+
+penalties:                # multiply the score when Jev's probability is above 0.6 (1.0 = no effect)
+  contract_or_temp: 0.9
+  hard_requirement_gap: 0.9
+  requires_clearance: 0.8
+  non_us: 0.5             # role is outside home_country with no remote option
+  mainly_swe: 0.8
+
+seniority_multiplier:
+  too_junior: 0.85
+  match: 1.0
+  stretch: 0.9
+  too_senior: 0.7
+
+tiers:
+  A: 0.63                 # tier A: documents are written automatically
+  B: 0.48                 # tier B: mentioned in the digest only
+max_docs_per_run: 8       # caps writer spend per run
+
+# A posting title must contain one of these (whole-word, case-insensitive) and none of the excludes.
+title_keywords: [data, analytics, analyst, scientist, machine learning, ml, ai, research, insights, bi,
+                 business intelligence, statistician, forecasting, modeling, economist, strategy]
+exclude_title_keywords: [intern, internship, sales, account executive, recruiter, nurse, driver, warehouse,
+                         frontend, ios, android, designer, attorney, customer success, support engineer]
+
+# ---- WHERE TO LOOK --------------------------------------------------------------------------
+sources:
+  remotive: true          # remote-job aggregators
+  remoteok: true
+  himalayas: true
+  ats:                    # company boards by token. Test one: https://boards-api.greenhouse.io/v1/boards/<token>/jobs
+    greenhouse: [airtable, duolingo, khanacademy, stripe]
+    lever: [spotify]
+    ashby: [notion, ramp]
+  workday: []             # e.g. - {tenant: acme, wd: wd5, site: Acme_Careers, search: [analyst, data]}
+  oracle: []              # e.g. - {host: careersearch.stanford.edu, site: CX_1, company: Stanford University, search: [data, analyst]}

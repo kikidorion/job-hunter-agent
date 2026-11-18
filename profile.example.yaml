@@ -1,0 +1,83 @@
+# YOUR MASTER FACTS. Copy to profile.yaml and replace everything with your own.
+# The writer may only select, reorder, and rephrase what is in this file, and the TypeSafe verifier
+# drops any resume bullet or flags any cover-letter sentence that this file does not support.
+# So: put every true, specific fact here once (numbers, tools, outcomes), and never anything you
+# would not defend in an interview. Fields set to null are asked over Telegram on the first run.
+# Example person below is fictional. Full guide: docs/CUSTOMIZE.md
+
+name: Jordan Rivera
+email: jordan.rivera@example.com
+phone: 555.010.0199
+location: Denver, CO
+linkedin: linkedin.com/in/jordan-rivera-example
+github: github.com/jordan-rivera-example
+
+years_experience: 6        # Jev compares this with each posting's level (too junior / match / stretch)
+
+# Optional: a short summary Jev reads when judging fit. Defaults to your titles and project names.
+judge_summary:
+  experience: "About 6 years: data analyst at a public health department (dashboards, forecasting), operations analyst at a logistics company."
+  independent_work: "Open-source air-quality dashboard; SQL tutoring."
+
+education:
+  - degree: MS in Data Science
+    school: University of Colorado
+    dates: Aug 2019 - May 2021
+    notes: Capstone on hospital readmission forecasting.
+  - degree: BA in Economics
+    school: Colorado State University
+    dates: Aug 2013 - May 2017
+
+# Experience in the order it should appear (most recent first).
+#   show_for:      entry appears ONLY for these role families or industries (from config.yaml)
+#   highlight_for: for these, the cover letter must name this entry and tie it to the job
+experience:
+  - company: Denver Public Health
+    title: Data Analyst
+    dates: Jun 2021 - Present
+    bullets:
+      - Built a weekly respiratory-illness forecast in Python that cut planning-meeting prep from two days to two hours.
+      - Maintained 14 Tableau dashboards used by 120 staff across three divisions.
+      - Automated SQL data pipelines from four hospital feeds, reducing manual reporting time by 30%.
+  - company: Independent
+    title: Freelance Analytics Consultant
+    dates: Jan 2023 - Present
+    show_for: {families: [data_analyst], industries: [public_sector]}
+    bullets:
+      - Built donor-retention dashboards for two local nonprofits.
+  - company: Peak Freight
+    title: Operations Analyst
+    dates: Jul 2017 - May 2019
+    highlight_for: {industries: [climate_energy]}
+    bullets:
+      - Modeled route fuel use and found a schedule change that cut diesel spend 8%.
+      - Built Excel and SQL reports for daily dispatch decisions.
+
+# Projects. include: false keeps one out of every document.
+projects:
+  - name: Air Quality Watch
+    include: true
+    url: github.com/jordan-rivera-example/air-quality-watch
+    facts:
+      - Open-source dashboard that pulls EPA AirNow data hourly and alerts on unhealthy readings.
+      - Used by a neighborhood association of about 300 households.
+
+skills:
+  languages: [Python, SQL, R]
+  analysis: [Forecasting, Regression, A/B testing, Time series]
+  viz: [Tableau, Power BI]
+  data_eng: [dbt, Airflow, Postgres]
+
+involvement:
+  - Volunteer data mentor, Code for Denver
+
+# Answers reused on application forms (shown in each APPLY.md). null = the agent asks you once on Telegram.
+application_defaults:
+  work_authorization: null
+  requires_sponsorship: null
+  earliest_start: null
+  salary_expectation: null
+  pronouns: null
+
+# Extra true facts the writer may use (the agent also appends your Telegram answers here, in data/answers.yaml).
+extra_facts: []
