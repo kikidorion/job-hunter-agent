@@ -36,6 +36,17 @@ You can **check the ranking against your own taste.** Label real postings yes or
 - **No AI tells.** Em and en dashes and curly quotes are scrubbed, along with a list of overused AI words ("delve," "passionate," "tapestry"...). A generic-letter check forces a rewrite when the letter could have been sent to any company.
 - **ATS-ready files.** Single column, standard section headings, real selectable text, and a standard font. File metadata carries only your name, with no generator or producer tags. DOCX dates are set to now.
 
+## Don't want to install anything?
+
+The method also works as copy-paste prompts for ChatGPT, Claude, or Gemini:
+1. Build your master facts.
+2. Score the job.
+3. Tailor the resume and cover letter.
+4. Fact-check every line.
+5. Export ATS-ready files.
+
+→ **[prompts/](prompts/README.md)**
+
 ## Quick start
 
 ```bash
